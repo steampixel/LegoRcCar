@@ -189,7 +189,7 @@ var app = http.createServer(function (request, response) {
     request.addListener('end', function () {
          file.serve(request, response);
     }).resume();
-}).listen(8080);
+}).listen(80);
 
 /*
 	Socket application
@@ -198,11 +198,13 @@ io = socket.listen(app);
 
 io.sockets.on('connection', function(socket){
 	
-	console.log('Client connected...');
+    console.log('Client connected...');
 
-	socket.on('servo',function(data){
+    socket.on('servo',function(data){
 
         setServoDirection(data.direction);
+        
+        console.log(data);
 
     });
     
@@ -213,6 +215,8 @@ io.sockets.on('connection', function(socket){
 
         setEnginePulse(pulse);
         setEngineDirection(data.direction);
+
+	console.log(data);
     
     });
     

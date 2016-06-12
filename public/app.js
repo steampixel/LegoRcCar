@@ -1,4 +1,4 @@
-var socket = io.connect(window.location.hostname+':8080');
+var socket = io.connect(window.location.hostname+':80');
 
 var enable_gyroscope = false;
 
@@ -135,6 +135,9 @@ $(function() {
     /*
         Gyroscope
     */
+    var last_send_speed = 0;
+    var last_send_direction = 0;
+    var last_send_servo_direction = 0;
     window.ondeviceorientation = function(event){
         
         if(enable_gyroscope){
@@ -199,12 +202,23 @@ $(function() {
             $('#engine').html('Speed: '+speed+'<br/>Engine: '+engine_direction+'<br/>Servo: '+servo_direction);
             //$('#gyroscope_data').html('Beta: '+event.beta+'<br/>Gamma: '+event.gamma);
             
-            //Emit
-            socket.emit('servo',{direction:servo_direction});
-            socket.emit('engine',{
-                speed:speed,
-                direction:engine_direction
-            });
+            //Emit engine
+            if(last_send_speed!=speed||last_send_direction!=engine_direction){//Do not emit if no changes was made
+                socket.emit('engine',{
+                    speed:speed,
+                    direction:engine_direction
+                });
+                last_send_speed = speed;
+                last_send_direction = engine_direction;
+            }
+
+            //Emit servo
+            if(last_send_servo_direction!=servo_direction){//Do not emit if no changes was made
+                socket.emit('servo',{direction:servo_direction});
+                last_send_servo_direction = servo_direction;
+            }
+
+
         }
     };
     
@@ -214,29 +228,43 @@ $(function() {
     $(document).keydown(function() {
 
       if (event.which == 38){
-            socket.emit('engine',{
-                speed:100,
-                direction:'forward'
-            });
+            if(last_send_speed!=100||last_send_direction!='forward'){//Do not emit if no changes was made
+                socket.emit('engine',{
+                    speed:100,
+                    direction:'forward'
+                });
+                last_send_speed = 100;
+                last_send_direction = 'forward';
+            }
             event.preventDefault();
       }
       
       if (event.which == 40){
-            socket.emit('engine',{
-                speed:100,
-                direction:'backward'
-            });
+            if(last_send_speed!=100||last_send_direction!='backward'){//Do not emit if no changes was made
+                socket.emit('engine',{
+                    speed:100,
+                    direction:'backward'
+                });
+                last_send_speed = 100;
+                last_send_direction = 'backward';
+            }
             event.preventDefault();
       }
       
       if (event.which == 37){
-            socket.emit('servo',{direction:'left'});
-            event.preventDefault();
+            if(last_send_servo_direction!='left'){
+                socket.emit('servo',{direction:'left'});
+                event.preventDefault();
+                last_send_servo_direction = 'left';
+            }
       }
       
       if (event.which == 39){
-            socket.emit('servo',{direction:'right'});
-            event.preventDefault();
+            if(last_send_servo_direction!='right'){
+                socket.emit('servo',{direction:'right'});
+                event.preventDefault();
+                last_send_servo_direction = 'right';
+            }
       }
       
     }); 
@@ -248,6 +276,8 @@ $(function() {
                 speed:100,
                 direction:'off'
             });
+            last_send_speed = 0;
+            last_send_direction = 'off';
             event.preventDefault();
       }
       
@@ -256,17 +286,21 @@ $(function() {
                 speed:100,
                 direction:'off'
             });
+            last_send_speed = 0;
+            last_send_direction = 'off';
             event.preventDefault();
       }
       
       if (event.which == 37){
             socket.emit('servo',{direction:'center'});
             event.preventDefault();
+            last_send_servo_direction = 'center';
       }
       
       if (event.which == 39){
             socket.emit('servo',{direction:'center'});
             event.preventDefault();
+            last_send_servo_direction = 'center';
       }
       
     }); 
