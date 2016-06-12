@@ -1,0 +1,91 @@
+<html>
+
+<head>
+
+    <meta name="viewport" content="user-scaleable=no, initial-scale=1.0, maximum-scale=1.0;" />
+
+    <script src="lib/jquery-2.2.0.min.js"></script>
+    <script src="lib/socket.io.js"></script>
+    
+    <script src="lib/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+    <link href="lib/bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-3.3.6-dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    
+    <script src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+    <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" rel="stylesheet">
+    <link href="lib/jquery-ui-1.11.4/jquery-ui.theme.min.css" rel="stylesheet">
+    
+    <script src="app.js"></script>
+    <link href="app.css" rel="stylesheet">
+    
+</head>
+
+<body>
+    
+    <div class="container">
+        
+        <div class="row">
+            <div class="col col-md-12">
+                <h1>Lego Car Remote Controll</h1>
+                <span id="connection_status">Disconnected</span>
+            </div>
+        </div>
+        
+        <div class="row top-space">
+            <div class="col col-md-10 col-md-offset-2">
+                <button id="main_switch" class="btn btn-success btn-full-width" data-on-value="Stop Gyroscope Driving" data-off-value="Start Gyroscope Driving">Start Gyroscope Driving</button>
+            </div>
+        </div>
+        
+        <!--<div class="row top-space">
+            <div class="col col-xs-12 col-md-2">
+                <b class="pull-right">Gyroscope</b>
+            </div>
+            <div class="col col-xs-12 col-md-10">
+                <div id="gyroscope_data"></div>
+            </div>
+        </div> -->
+        
+        <div class="row top-space">
+            <div class="col col-xs-12 col-md-2">
+                <b class="pull-right">Engine</b>
+            </div>
+            <div class="col col-xs-12 col-md-10">
+                <div id="engine"></div>
+            </div>
+        </div> 
+        
+        <div class="row top-space">
+            <div class="col col-xs-12 col-md-2">
+                <b class="pull-right">Led Controll</b>
+            </div>
+            <div class="col col-xs-12 col-md-10">
+                <div id="led_slider"></div>
+            </div>
+        </div>                
+        
+        <div class="row top-space">
+            <div class="col col-xs-12 col-md-2">
+                <b class="pull-right">Stream</b>
+            </div>
+            <div class="col col-xs-12 col-md-10">
+                <button id="camera_stream_button" class="btn btn-success btn-full-width" data-on-value="Disable Camera Stream" data-off-value="Enable Camera Stream">Enable Camera Stream</button>
+                <div id="camera_stream"></div>
+            </div>
+        </div>
+        
+        <div class="row top-space">
+            <div class="col col-xs-12 col-md-2">
+                <b class="pull-right">Camera</b>
+            </div>
+            <div class="col col-xs-12 col-md-10">
+                <button id="camera_button" class="btn btn-primary btn-full-width">Take Picture</button>
+                <div id="last_picture"></div>
+            </div>
+        </div>
+    
+    </div>
+    
+</body>
+
+</html>
