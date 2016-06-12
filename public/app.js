@@ -111,6 +111,17 @@ $(function() {
         
     });
     
+    /*
+        Camera Resulution
+    */
+    $('#camera_resulution').on('change', function (e) {
+        var selected_value = this.value;
+        //console.log(selected_value);
+        var selected_values = selected_value.split("x");
+	socket.emit('camera-resulution',{width:selected_values[0],height:selected_values[1]});
+        //console.log(selected_values);
+    });
+    
     /* 
         Led slider
     */

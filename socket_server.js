@@ -134,8 +134,8 @@ function takePicture(){
 }
 
 var enable_camera_stream = false;
-var camera_stream_height = 600;//Max 2592 x 1944
-var camera_stream_width = 800;
+var camera_stream_height = 300;//Max 2592 x 1944
+var camera_stream_width = 400;
 function cameraStreamLoop(){
     if(enable_camera_stream){
         exec('raspistill -w '+camera_stream_width+' -h '+camera_stream_height+' -t 1 -o - | base64', function(error, stdout, stderr) {
@@ -233,11 +233,10 @@ io.sockets.on('connection', function(socket){
 
 	});
     
-    socket.on('camera_resulution',function(data){
-        
-        var camera_stream_height = data.height;
-	var camera_stream_width = data.width;
-
+    socket.on('camera-resulution',function(data){
+	console.log('Changing camera resulution to '+data.width+'x'+data.height);
+        camera_stream_height = data.height;
+	camera_stream_width = data.width;
     });
 
     socket.on('camera',function(data){
@@ -263,7 +262,7 @@ io.sockets.on('connection', function(socket){
             if(!stream_in_process){//Wenn gerade kein Bild gemacht wird
                 exec('raspistill -w 160 -h 120 -t 1 -o - | base64', function(error, stdout, stderr) {
                     io.emit('picture-stream',{base64:stdout});
-                    stream_in_process = false;//Es kÃ¶nnen neue Bilder gemacht werden
+                    stream_in_process = false;//Es können neue Bilder gemacht werden
                 });
                 stream_in_process = true;//Es wird gerade ein Bild gemacht
             }
